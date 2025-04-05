@@ -1,0 +1,54 @@
+package com.musinsa.price_api;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.musinsa.price_api.model.Product;
+import com.musinsa.price_api.repository.ProductRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+public class PriceControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+    
+    @Autowired
+    private ProductRepository productRepository;
+    
+    @Test
+    public void testGetLowestPricePerCategory_success() throws Exception {
+        mockMvc.perform(get("/api/v1/categories/lowest"))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.총액").exists())
+               .andExpect(jsonPath("$.details").isArray())
+               .andExpect(jsonPath("$.details[0].카테고리").isNotEmpty())
+               .andExpect(jsonPath("$.details[0].브랜드").isNotEmpty())
+               .andExpect(jsonPath("$.details[0].가격").isNotEmpty());
+    }
+
+    @Test
+    @Transactional
+    public void testGetLowestPricePerCategoryMissingData() throws Exception {
+        // Remove all products in the "양말" (socks) category
+        List<Product> socksProducts = productRepository.findAll().stream()
+                .filter(p -> "양말".equals(p.getCategory()))
+                .collect(Collectors.toList());
+        productRepository.deleteAll(socksProducts);
+        
+        // When the service cannot find a product for one category, it should throw an exception
+        mockMvc.perform(get("/api/v1/categories/lowest"))
+               .andExpect(status().is5xxServerError());
+    }
+}
