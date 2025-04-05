@@ -5,10 +5,10 @@
 ## Softwares Used
 
 프로젝트에는 다음의 소프트웨어가 사용되었습니다. 이 소프트웨어들은 프로젝트를 실행하기 위해 이미 설치되어 있다고 가정했습니다.
-- Java (version 23.02, OpenJDK)
+- Java (version 23.0.2, OpenJDK)
 - Gradle (version 8.13)
 - node.js (version 20.17, npm version 10.8.2)
-- docker (version 27.3.1) 
+- docker (version 27.3.1)
 
 ## Initial Design
 

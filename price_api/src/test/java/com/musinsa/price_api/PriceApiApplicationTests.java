@@ -1,10 +1,10 @@
-package com.example.price_api;
+package com.musinsa.price_api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DemoApplicationTests {
+class PriceApiApplicationTests {
 
 	@Test
 	void contextLoads() {
