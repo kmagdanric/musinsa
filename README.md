@@ -31,5 +31,5 @@ README.md
 
 ## Unittest
 
-브랜드 CRUD를 위해 항상 데이터를 initialize하지 않고, 테스트 케이스간 데이터 정합성 간섭이 없도록 각 테스트 케이스는 @transactional, @BeforeEach를 통해 테이블 컨텐츠가 테스트 시작전 비어있도록 만들었습니다. 
+브랜드 CRUD를 위해 항상 데이터를 initialize하지 않고, 테스트 케이스간 데이터 정합성 간섭이 없도록 각 테스트 케이스는 @transactional, @BeforeEach를 통해 테이블 컨텐츠가 테스트 시작전 비어있도록 만들었습니다.
 
