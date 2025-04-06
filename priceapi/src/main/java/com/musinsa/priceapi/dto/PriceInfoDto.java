@@ -17,7 +17,6 @@ public class PriceInfoDto {
     this.price = price;
   }
 
-  // Getters and setters...
   public String getBrand() {
     return brand;
   }

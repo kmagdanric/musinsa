@@ -14,7 +14,7 @@ public class Product {
   private Long id;
 
   private String category;
-  private int price; // Price as an integer value
+  private int price;
 
   @ManyToOne
   @JoinColumn(name = "brand_id")
@@ -28,7 +28,6 @@ public class Product {
     this.brand = brand;
   }
 
-  // Getters and setters
   public Long getId() {
     return id;
   }

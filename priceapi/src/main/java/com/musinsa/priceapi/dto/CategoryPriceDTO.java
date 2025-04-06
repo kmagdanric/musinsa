@@ -21,7 +21,6 @@ public class CategoryPriceDto {
     this.price = price;
   }
 
-  // Getters and setters
   public String getCategory() {
     return category;
   }

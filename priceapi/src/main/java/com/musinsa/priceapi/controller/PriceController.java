@@ -23,7 +23,7 @@ public class PriceController {
       CategoryLowestPriceResponse response = priceService.getLowestPricePerCategory();
       return ResponseEntity.ok(response);
     } catch (Exception e) {
-      return ResponseEntity.status(500).build();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
   }
 

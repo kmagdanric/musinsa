@@ -18,7 +18,6 @@ public class CategoryLowestPriceResponse {
     this.total = total;
   }
 
-  // Getters and setters
   public List<CategoryPriceDto> getDetails() {
     return details;
   }

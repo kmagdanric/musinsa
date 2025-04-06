@@ -25,7 +25,6 @@ public class PriceService {
   }
 
   public CategoryLowestPriceResponse getLowestPricePerCategory() {
-    // Define the list of categories (as specified in the assignment)
     List<String> categories = Arrays.asList("상의", "아우터", "바지", "스니커즈", "가방", "모자", "양말", "액세서리");
     List<CategoryPriceDto> details = new ArrayList<>();
     int total = 0;
@@ -42,7 +41,6 @@ public class PriceService {
       total += product.getPrice();
     }
 
-    // Create the response with the formatted total
     return new CategoryLowestPriceResponse(details, formatPrice(total));
   }
 

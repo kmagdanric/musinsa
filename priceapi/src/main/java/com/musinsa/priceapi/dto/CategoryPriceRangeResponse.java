@@ -23,7 +23,6 @@ public class CategoryPriceRangeResponse {
     this.highestPrice = highestPrice;
   }
 
-  // Getters and setters...
   public String getCategory() {
     return category;
   }
