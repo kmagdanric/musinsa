@@ -5,7 +5,6 @@ import com.musinsa.priceapi.dto.CategoryPriceRangeResponse;
 import com.musinsa.priceapi.dto.SingleBrandPurchaseResponseDto;
 import com.musinsa.priceapi.service.PriceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,33 +19,20 @@ public class PriceController {
 
   @GetMapping("/categories/lowest")
   public ResponseEntity<CategoryLowestPriceResponse> getLowestPricePerCategory() {
-    try {
-      CategoryLowestPriceResponse response = priceService.getLowestPricePerCategory();
-      return ResponseEntity.ok(response);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
+    CategoryLowestPriceResponse response = priceService.getLowestPricePerCategory();
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping("/categories/price-range")
   public ResponseEntity<CategoryPriceRangeResponse> getPriceRangeForCategory(
       @RequestParam String category) {
-    try {
-      CategoryPriceRangeResponse response = priceService.getPriceRangeForCategory(category);
-      return ResponseEntity.ok(response);
-    } catch (Exception e) {
-      // Return a proper error response.
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
+    CategoryPriceRangeResponse response = priceService.getPriceRangeForCategory(category);
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping("/brands/single-purchase")
   public ResponseEntity<SingleBrandPurchaseResponseDto> getLowestSingleBrandPurchase() {
-    try {
-      SingleBrandPurchaseResponseDto response = priceService.getLowestSingleBrandPurchase();
-      return ResponseEntity.ok(response);
-    } catch (Exception e) {
-      return ResponseEntity.status(500).body(null);
-    }
+    SingleBrandPurchaseResponseDto response = priceService.getLowestSingleBrandPurchase();
+    return ResponseEntity.ok(response);
   }
 }

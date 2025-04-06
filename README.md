@@ -15,7 +15,7 @@
 ## Project Structure
 
 ```
-price_api/
+priceapi/
   src/
     main/
       java/

@@ -7,6 +7,8 @@ import com.musinsa.priceapi.dto.PriceInfoDto;
 import com.musinsa.priceapi.dto.SingleBrandPurchaseDetailDto;
 import com.musinsa.priceapi.dto.SingleBrandPurchaseResponseDto;
 import com.musinsa.priceapi.dto.SingleBrandPurchaseResponseDto.PurchaseInfo;
+import com.musinsa.priceapi.exception.NoCompleteBrandException;
+import com.musinsa.priceapi.exception.ProductNotFoundException;
 import com.musinsa.priceapi.model.Brand;
 import com.musinsa.priceapi.model.Product;
 import com.musinsa.priceapi.repository.BrandRepository;
@@ -27,22 +29,23 @@ public class PriceService {
   @Autowired private ProductRepository productRepository;
   @Autowired private BrandRepository brandRepository;
 
+  private static final List<String> CATEGORIES =
+      Arrays.asList("상의", "아우터", "바지", "스니커즈", "가방", "모자", "양말", "액세서리");
+
   private String formatPrice(int price) {
     NumberFormat formatter = NumberFormat.getNumberInstance(Locale.KOREA);
     return formatter.format(price);
   }
 
   public CategoryLowestPriceResponse getLowestPricePerCategory() {
-    List<String> categories = Arrays.asList("상의", "아우터", "바지", "스니커즈", "가방", "모자", "양말", "액세서리");
     List<CategoryPriceDto> details = new ArrayList<>();
     int total = 0;
 
-    for (String category : categories) {
+    for (String category : CATEGORIES) {
       Product product =
           productRepository
               .findFirstByCategoryOrderByPriceAsc(category)
-              .orElseThrow(
-                  () -> new RuntimeException("No product found for category: " + category));
+              .orElseThrow(() -> new ProductNotFoundException(category));
       details.add(
           new CategoryPriceDto(
               category, product.getBrand().getName(), formatPrice(product.getPrice())));
@@ -56,11 +59,11 @@ public class PriceService {
     Product lowestProduct =
         productRepository
             .findFirstByCategoryOrderByPriceAsc(category)
-            .orElseThrow(() -> new RuntimeException("No product found for category: " + category));
+            .orElseThrow(() -> new ProductNotFoundException(category));
     Product highestProduct =
         productRepository
             .findFirstByCategoryOrderByPriceDesc(category)
-            .orElseThrow(() -> new RuntimeException("No product found for category: " + category));
+            .orElseThrow(() -> new ProductNotFoundException(category));
 
     PriceInfoDto lowestInfo =
         new PriceInfoDto(lowestProduct.getBrand().getName(), formatPrice(lowestProduct.getPrice()));
@@ -72,8 +75,6 @@ public class PriceService {
   }
 
   public SingleBrandPurchaseResponseDto getLowestSingleBrandPurchase() {
-    List<String> categories = Arrays.asList("상의", "아우터", "바지", "스니커즈", "가방", "모자", "양말", "액세서리");
-
     List<Brand> brands = brandRepository.findAll();
     PurchaseInfo lowestPurchase = null;
     int lowestTotal = Integer.MAX_VALUE;
@@ -82,7 +83,7 @@ public class PriceService {
       final MutableContainer container = new MutableContainer();
 
       List<SingleBrandPurchaseDetailDto> details =
-          categories.stream()
+          CATEGORIES.stream()
               .map(
                   category -> {
                     Optional<Product> productOpt =
@@ -100,7 +101,7 @@ public class PriceService {
               .filter(dto -> dto != null)
               .collect(Collectors.toList());
 
-      if (container.missingCategory || details.size() < categories.size()) {
+      if (container.missingCategory || details.size() < CATEGORIES.size()) {
         continue;
       }
 
@@ -112,7 +113,7 @@ public class PriceService {
     }
 
     if (lowestPurchase == null) {
-      throw new RuntimeException("No brand has products for all required categories.");
+      throw new NoCompleteBrandException();
     }
     return new SingleBrandPurchaseResponseDto(lowestPurchase);
   }
