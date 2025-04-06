@@ -30,7 +30,7 @@ public class PriceService {
   @Autowired private BrandRepository brandRepository;
 
   private static final List<String> CATEGORIES =
-      Arrays.asList("상의", "아우터", "바지", "스니커즈", "가방", "모자", "양말", "액세서리");
+    Arrays.asList("상의", "아우터", "바지", "스니커즈", "가방", "모자", "양말", "액세서리");
 
   private String formatPrice(int price) {
     NumberFormat formatter = NumberFormat.getNumberInstance(Locale.KOREA);
@@ -43,12 +43,12 @@ public class PriceService {
 
     for (String category : CATEGORIES) {
       Product product =
-          productRepository
-              .findFirstByCategoryOrderByPriceAsc(category)
-              .orElseThrow(() -> new ProductNotFoundException(category));
+        productRepository
+          .findFirstByCategoryOrderByPriceAsc(category)
+          .orElseThrow(() -> new ProductNotFoundException(category));
       details.add(
-          new CategoryPriceDto(
-              category, product.getBrand().getName(), formatPrice(product.getPrice())));
+        new CategoryPriceDto(
+          category, product.getBrand().getName(), formatPrice(product.getPrice())));
       total += product.getPrice();
     }
 
@@ -57,19 +57,19 @@ public class PriceService {
 
   public CategoryPriceRangeResponse getPriceRangeForCategory(String category) {
     Product lowestProduct =
-        productRepository
-            .findFirstByCategoryOrderByPriceAsc(category)
-            .orElseThrow(() -> new ProductNotFoundException(category));
+      productRepository
+        .findFirstByCategoryOrderByPriceAsc(category)
+        .orElseThrow(() -> new ProductNotFoundException(category));
     Product highestProduct =
-        productRepository
-            .findFirstByCategoryOrderByPriceDesc(category)
-            .orElseThrow(() -> new ProductNotFoundException(category));
+      productRepository
+        .findFirstByCategoryOrderByPriceDesc(category)
+        .orElseThrow(() -> new ProductNotFoundException(category));
 
     PriceInfoDto lowestInfo =
-        new PriceInfoDto(lowestProduct.getBrand().getName(), formatPrice(lowestProduct.getPrice()));
+      new PriceInfoDto(lowestProduct.getBrand().getName(), formatPrice(lowestProduct.getPrice()));
     PriceInfoDto highestInfo =
-        new PriceInfoDto(
-            highestProduct.getBrand().getName(), formatPrice(highestProduct.getPrice()));
+      new PriceInfoDto(
+        highestProduct.getBrand().getName(), formatPrice(highestProduct.getPrice()));
 
     return new CategoryPriceRangeResponse(category, List.of(lowestInfo), List.of(highestInfo));
   }
@@ -83,23 +83,23 @@ public class PriceService {
       final MutableContainer container = new MutableContainer();
 
       List<SingleBrandPurchaseDetailDto> details =
-          CATEGORIES.stream()
-              .map(
-                  category -> {
-                    Optional<Product> productOpt =
-                        productRepository.findByCategoryAndBrandId(category, brand.getId());
-                    if (productOpt.isPresent()) {
-                      Product product = productOpt.get();
-                      container.total += product.getPrice();
-                      return new SingleBrandPurchaseDetailDto(
-                          category, formatPrice(product.getPrice()));
-                    } else {
-                      container.missingCategory = true;
-                      return null;
-                    }
-                  })
-              .filter(dto -> dto != null)
-              .collect(Collectors.toList());
+        CATEGORIES.stream()
+            .map(
+              category -> {
+                Optional<Product> productOpt =
+                  productRepository.findByCategoryAndBrandId(category, brand.getId());
+                if (productOpt.isPresent()) {
+                  Product product = productOpt.get();
+                  container.total += product.getPrice();
+                  return new SingleBrandPurchaseDetailDto(
+                    category, formatPrice(product.getPrice()));
+                } else {
+                  container.missingCategory = true;
+                  return null;
+                }
+              })
+            .filter(dto -> dto != null)
+            .collect(Collectors.toList());
 
       if (container.missingCategory || details.size() < CATEGORIES.size()) {
         continue;
