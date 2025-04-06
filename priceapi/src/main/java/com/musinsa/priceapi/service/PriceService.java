@@ -2,6 +2,8 @@ package com.musinsa.priceapi.service;
 
 import com.musinsa.priceapi.dto.CategoryLowestPriceResponse;
 import com.musinsa.priceapi.dto.CategoryPriceDto;
+import com.musinsa.priceapi.dto.CategoryPriceRangeResponse;
+import com.musinsa.priceapi.dto.PriceInfoDto;
 import com.musinsa.priceapi.model.Product;
 import com.musinsa.priceapi.repository.ProductRepository;
 import java.text.NumberFormat;
@@ -17,7 +19,6 @@ public class PriceService {
 
   @Autowired private ProductRepository productRepository;
 
-  // Helper to format price as currency (or you can customize as needed)
   private String formatPrice(int price) {
     NumberFormat formatter = NumberFormat.getNumberInstance(Locale.KOREA);
     return formatter.format(price);
@@ -44,4 +45,16 @@ public class PriceService {
     // Create the response with the formatted total
     return new CategoryLowestPriceResponse(details, formatPrice(total));
   }
+
+  public CategoryPriceRangeResponse getPriceRangeForCategory(String category) {
+    Product lowestProduct = productRepository.findFirstByCategoryOrderByPriceAsc(category)
+            .orElseThrow(() -> new RuntimeException("No product found for category: " + category));
+    Product highestProduct = productRepository.findFirstByCategoryOrderByPriceDesc(category)
+            .orElseThrow(() -> new RuntimeException("No product found for category: " + category));
+
+    PriceInfoDto lowestInfo = new PriceInfoDto(lowestProduct.getBrand().getName(), formatPrice(lowestProduct.getPrice()));
+    PriceInfoDto highestInfo = new PriceInfoDto(highestProduct.getBrand().getName(), formatPrice(highestProduct.getPrice()));
+
+    return new CategoryPriceRangeResponse(category, List.of(lowestInfo), List.of(highestInfo));
+}
 }

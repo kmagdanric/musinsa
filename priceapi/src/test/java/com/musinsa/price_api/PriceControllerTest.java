@@ -48,4 +48,19 @@ public class PriceControllerTest {
     // When the service cannot find a product for one category, it should throw an exception
     mockMvc.perform(get("/api/v1/categories/lowest")).andExpect(status().is5xxServerError());
   }
+
+  @Test
+  public void testGetPriceRangeForCategory_success() throws Exception { 
+    mockMvc
+        .perform(get("/api/v1/categories/price-range")
+        .param("category", "상의"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.카테고리").value("상의"))
+        .andExpect(jsonPath("$.최저가").isArray())
+        .andExpect(jsonPath("$.최고가").isArray())
+        .andExpect(jsonPath("$.최저가[0].브랜드").isNotEmpty())
+        .andExpect(jsonPath("$.최저가[0].가격").isNotEmpty())
+        .andExpect(jsonPath("$.최고가[0].브랜드").isNotEmpty())
+        .andExpect(jsonPath("$.최고가[0].가격").isNotEmpty());
+  }
 }
