@@ -91,4 +91,15 @@ public class PriceControllerTest {
         .andExpect(jsonPath("$.최고가[0].브랜드").value("A"))
         .andExpect(jsonPath("$.최고가[0].가격").value("11,200"));
   }
+
+  @Test
+  public void testGetLowestSingleBrandPurchaseSuccess() throws Exception {
+    mockMvc
+        .perform(get("/api/v1/brands/single-purchase"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.최저가").exists())
+        .andExpect(jsonPath("$.최저가.브랜드").isNotEmpty())
+        .andExpect(jsonPath("$.최저가.카테고리").isArray())
+        .andExpect(jsonPath("$.최저가.총액").isNotEmpty());
+  }
 }

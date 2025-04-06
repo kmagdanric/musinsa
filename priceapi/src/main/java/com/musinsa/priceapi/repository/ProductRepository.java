@@ -8,4 +8,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
   Optional<Product> findFirstByCategoryOrderByPriceAsc(String category);
 
   Optional<Product> findFirstByCategoryOrderByPriceDesc(String category);
+
+  Optional<Product> findByCategoryAndBrandId(String category, Long brandId);
 }

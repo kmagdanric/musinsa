@@ -2,6 +2,7 @@ package com.musinsa.priceapi.controller;
 
 import com.musinsa.priceapi.dto.CategoryLowestPriceResponse;
 import com.musinsa.priceapi.dto.CategoryPriceRangeResponse;
+import com.musinsa.priceapi.dto.SingleBrandPurchaseResponseDto;
 import com.musinsa.priceapi.service.PriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,16 @@ public class PriceController {
     } catch (Exception e) {
       // Return a proper error response.
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+  }
+
+  @GetMapping("/brands/single-purchase")
+  public ResponseEntity<SingleBrandPurchaseResponseDto> getLowestSingleBrandPurchase() {
+    try {
+      SingleBrandPurchaseResponseDto response = priceService.getLowestSingleBrandPurchase();
+      return ResponseEntity.ok(response);
+    } catch (Exception e) {
+      return ResponseEntity.status(500).body(null);
     }
   }
 }
