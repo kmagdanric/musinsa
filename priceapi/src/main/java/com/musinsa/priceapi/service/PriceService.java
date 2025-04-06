@@ -1,7 +1,7 @@
 package com.musinsa.priceapi.service;
 
 import com.musinsa.priceapi.dto.CategoryLowestPriceResponse;
-import com.musinsa.priceapi.dto.CategoryPriceDTO;
+import com.musinsa.priceapi.dto.CategoryPriceDto;
 import com.musinsa.priceapi.model.Product;
 import com.musinsa.priceapi.repository.ProductRepository;
 import java.text.NumberFormat;
@@ -26,7 +26,7 @@ public class PriceService {
   public CategoryLowestPriceResponse getLowestPricePerCategory() {
     // Define the list of categories (as specified in the assignment)
     List<String> categories = Arrays.asList("상의", "아우터", "바지", "스니커즈", "가방", "모자", "양말", "액세서리");
-    List<CategoryPriceDTO> details = new ArrayList<>();
+    List<CategoryPriceDto> details = new ArrayList<>();
     int total = 0;
 
     for (String category : categories) {
@@ -36,7 +36,7 @@ public class PriceService {
               .orElseThrow(
                   () -> new RuntimeException("No product found for category: " + category));
       details.add(
-          new CategoryPriceDTO(
+          new CategoryPriceDto(
               category, product.getBrand().getName(), formatPrice(product.getPrice())));
       total += product.getPrice();
     }

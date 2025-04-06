@@ -2,7 +2,7 @@ package com.musinsa.priceapi.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class CategoryPriceDTO {
+public class CategoryPriceDto {
 
   @JsonProperty("카테고리")
   private String category;
@@ -13,9 +13,9 @@ public class CategoryPriceDTO {
   @JsonProperty("가격")
   private String price;
 
-  public CategoryPriceDTO() {}
+  public CategoryPriceDto() {}
 
-  public CategoryPriceDTO(String category, String brand, String price) {
+  public CategoryPriceDto(String category, String brand, String price) {
     this.category = category;
     this.brand = brand;
     this.price = price;

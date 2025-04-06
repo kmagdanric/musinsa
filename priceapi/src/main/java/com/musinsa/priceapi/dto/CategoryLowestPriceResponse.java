@@ -6,24 +6,24 @@ import java.util.List;
 public class CategoryLowestPriceResponse {
 
   @JsonProperty("details")
-  private List<CategoryPriceDTO> details;
+  private List<CategoryPriceDto> details;
 
   @JsonProperty("총액")
   private String total;
 
   public CategoryLowestPriceResponse() {}
 
-  public CategoryLowestPriceResponse(List<CategoryPriceDTO> details, String total) {
+  public CategoryLowestPriceResponse(List<CategoryPriceDto> details, String total) {
     this.details = details;
     this.total = total;
   }
 
   // Getters and setters
-  public List<CategoryPriceDTO> getDetails() {
+  public List<CategoryPriceDto> getDetails() {
     return details;
   }
 
-  public void setDetails(List<CategoryPriceDTO> details) {
+  public void setDetails(List<CategoryPriceDto> details) {
     this.details = details;
   }
 
