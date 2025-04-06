@@ -47,14 +47,21 @@ public class PriceService {
   }
 
   public CategoryPriceRangeResponse getPriceRangeForCategory(String category) {
-    Product lowestProduct = productRepository.findFirstByCategoryOrderByPriceAsc(category)
+    Product lowestProduct =
+        productRepository
+            .findFirstByCategoryOrderByPriceAsc(category)
             .orElseThrow(() -> new RuntimeException("No product found for category: " + category));
-    Product highestProduct = productRepository.findFirstByCategoryOrderByPriceDesc(category)
+    Product highestProduct =
+        productRepository
+            .findFirstByCategoryOrderByPriceDesc(category)
             .orElseThrow(() -> new RuntimeException("No product found for category: " + category));
 
-    PriceInfoDto lowestInfo = new PriceInfoDto(lowestProduct.getBrand().getName(), formatPrice(lowestProduct.getPrice()));
-    PriceInfoDto highestInfo = new PriceInfoDto(highestProduct.getBrand().getName(), formatPrice(highestProduct.getPrice()));
+    PriceInfoDto lowestInfo =
+        new PriceInfoDto(lowestProduct.getBrand().getName(), formatPrice(lowestProduct.getPrice()));
+    PriceInfoDto highestInfo =
+        new PriceInfoDto(
+            highestProduct.getBrand().getName(), formatPrice(highestProduct.getPrice()));
 
     return new CategoryPriceRangeResponse(category, List.of(lowestInfo), List.of(highestInfo));
-}
+  }
 }

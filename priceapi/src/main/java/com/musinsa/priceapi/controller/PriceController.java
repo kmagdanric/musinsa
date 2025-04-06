@@ -28,13 +28,14 @@ public class PriceController {
   }
 
   @GetMapping("/categories/price-range")
-  public ResponseEntity<CategoryPriceRangeResponse> getPriceRangeForCategory(@RequestParam String category) {
+  public ResponseEntity<CategoryPriceRangeResponse> getPriceRangeForCategory(
+      @RequestParam String category) {
     try {
-        CategoryPriceRangeResponse response = priceService.getPriceRangeForCategory(category);
-        return ResponseEntity.ok(response);
+      CategoryPriceRangeResponse response = priceService.getPriceRangeForCategory(category);
+      return ResponseEntity.ok(response);
     } catch (Exception e) {
-        // Return a proper error response.
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+      // Return a proper error response.
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
-}
+  }
 }

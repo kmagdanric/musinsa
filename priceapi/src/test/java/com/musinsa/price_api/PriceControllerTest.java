@@ -50,10 +50,9 @@ public class PriceControllerTest {
   }
 
   @Test
-  public void testGetPriceRangeForCategory_success() throws Exception { 
+  public void testGetPriceRangeForCategory_success() throws Exception {
     mockMvc
-        .perform(get("/api/v1/categories/price-range")
-        .param("category", "상의"))
+        .perform(get("/api/v1/categories/price-range").param("category", "상의"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.카테고리").value("상의"))
         .andExpect(jsonPath("$.최저가").isArray())
